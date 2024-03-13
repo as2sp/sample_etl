@@ -1,5 +1,4 @@
 # sample_etl
-Тестовое задание
 
 Общее описание системы и обработки данных с использованием Docker Compose, Spark, Hadoop и PostgreSQL
 
