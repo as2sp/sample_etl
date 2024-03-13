@@ -1,0 +1,38 @@
+1. Инструкция по развертыванию:
+
+    Склонируйте или загрузите репозиторий на локальную машину.
+    Установите Docker и Docker Compose, если они не установлены.
+    Откройте терминал, перейдите в каталог с файлом docker-compose.yml и выполните команду docker-compose up.
+
+
+2. Описание сервисов:
+
+    spark-master: Контейнер с Apache Spark Master.
+    spark-worker: Контейнер с Apache Spark Worker.
+    hadoop-namenode: Контейнер с Hadoop Namenode.
+    hadoop-datanode: Контейнер с Hadoop Datanode.
+    postgres: Контейнер с PostgreSQL для витрины данных.
+    api: Контейнер с Python Slim образом, на котором запускается Flask API.
+
+
+3. Примеры запросов к API через HTTP:
+
+Добавление события:
+
+POST /event HTTP/1.1
+Host: api:8000
+Content-Type: application/json
+
+{
+    "event_id": "123456",
+    "event_type": "click",
+    "timestamp": "2022-01-01T12:00:00",
+    "user_id": "789",
+    "ad_id": "456"
+}
+
+
+Получение аналитических данных:
+
+GET /analytics/query?groupBy=ad_id&metrics=impressions,clicks&granularity=day&startDate=2022-01-01&endDate=2022-01-07 HTTP/1.1
+Host: api:8000

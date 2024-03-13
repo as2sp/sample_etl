@@ -1,0 +1,148 @@
+openapi: 3.0.3
+info:
+  title: Тестовое задание для соискателей на позицию Senior DE
+  version: 1.0.1
+externalDocs:
+  description: Find out more about Swagger and OpenAPI
+  url: http://swagger.io
+paths:
+  /event:
+    post:
+      summary: Add an event
+      operationId: addEvent
+      requestBody:
+        description: Create a new event
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '405':
+          description: Invalid input
+  /analytics/query:
+    get:
+      summary: Get analytics data for events
+      operationId: getAnalyticsData
+      parameters:
+        - name: groupBy
+          in: query
+          description: Attributes for grouping (comma-separated)
+          required: true
+          schema:
+            type: string
+          example: attribute1,attribute4
+        - name: filters
+          in: query
+          description: Array of filters (attribute-value pairs)
+          required: false
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                attribute:
+                  type: string
+                value:
+                  type: string
+          example:
+            - attribute: attribute1
+              value: 198772
+            - attribute: attribute4
+              value: some string
+        - name: metrics
+          in: query
+          description: Metrics to retrieve (comma-separated, always sums)
+          required: true
+          schema:
+            type: string
+          example: metric1,metric2
+        - name: granularity
+          in: query
+          description: Granularity (hourly or daily)
+          required: true
+          schema:
+            type: string
+            enum: [hourly, daily]
+        - name: startDate
+          in: query
+          description: 'Start date and time for filtering (format: YYYY-MM-DDTHH:mm:ss)'
+          required: false
+          schema:
+            type: string
+            format: date-time
+          example: 2023-01-01T08:00:00
+        - name: endDate
+          in: query
+          description: 'End date and time for filtering (format: YYYY-MM-DDTHH:mm:ss)'
+          required: false
+          schema:
+            type: string
+            format: date-time
+          example: 2023-01-01T09:00:00
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              example:
+                results:
+                  - attribute1: 198772
+                    attribute4: some string
+                    date: "2023-01-01T08:00:00"
+                    metric1: 100
+                    metric2: 150.5
+                  - attribute1: 198772
+                    attribute4: some string
+                    date: "2023-01-01T09:00:00"
+                    metric1: 120
+                    metric2: 160.2
+        '405':
+          description: Invalid input
+components:
+  schemas:
+    Event:
+      type: object
+      required:
+        - id
+        - event_date
+        - metric1
+        - metric2
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        event_date:
+          type: string
+          format: date-time
+        attribute1:
+          type: integer
+          format: int64
+          example: 198772
+        attribute2:
+          type: integer
+          format: int64
+          example: 198772
+        attribute3:
+          type: integer
+          format: int64
+          example: 198772
+        attribute4:
+          type: string
+          example: some string
+        attribute5:
+          type: string
+          example: '12345'
+        attribute6:
+          type: boolean
+        metric1:
+          type: integer
+          format: int64
+          example: 198772
+        metric2:
+          type: number
+          format: currency
+          example: 1.2
